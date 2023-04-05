@@ -4,8 +4,16 @@ import 'package:flutter/services.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:licenta/Screens/main_screen.dart';
 import 'package:licenta/onboarding_1.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() => runApp(const App());
+import 'firebase_options.dart';
+
+void main() async {
+  runApp(const App());
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+}
 
 class App extends StatelessWidget {
   const App({Key? key}) : super(key: key);

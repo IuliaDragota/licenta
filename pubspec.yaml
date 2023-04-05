@@ -36,6 +36,7 @@ dependencies:
   introduction_screen: ^3.1.4
   intl: ^0.15.2
   charts_flutter: ^0.12.0
+  firebase_core: ^2.9.0
 
 dev_dependencies:
   flutter_test:
