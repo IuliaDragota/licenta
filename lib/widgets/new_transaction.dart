@@ -21,7 +21,7 @@ class _NewTransactionState extends State<NewTransaction> {
     if (_amountController.text.isEmpty) {
       return;
     }
-
+    final date = _selectedDate;
     final enteredTitle = _titleController.text;
     final enteredAmount = double.parse(_amountController.text);
 
@@ -31,6 +31,7 @@ class _NewTransactionState extends State<NewTransaction> {
 
     widget.addTx(
       // codul acesta se executa in functie de if
+      date,
       enteredTitle,
       enteredAmount,
     );

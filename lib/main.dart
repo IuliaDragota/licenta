@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:licenta/Screens/main_screen.dart';
+import 'package:licenta/onboarding_1.dart';
 
 void main() => runApp(const App());
 
@@ -19,7 +20,7 @@ class App extends StatelessWidget {
       title: 'Introduction screen',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(primarySwatch: Colors.blue),
-      home: const OnBoardingPage(),
+      home: const Onboarding1(),
     );
   }
 }

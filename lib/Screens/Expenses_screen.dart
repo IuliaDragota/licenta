@@ -26,12 +26,12 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
     }).toList();
   }
 
-  void _addNewTransaction(String txTitle, double txAmount) {
+  void _addNewTransaction(DateTime date, String txTitle, double txAmount) {
     final newTx = Transaction(
       id: DateTime.now().toString(),
       title: txTitle,
       amount: txAmount,
-      date: DateTime.now(),
+      date: date,
     );
 
     setState(() {
