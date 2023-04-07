@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:licenta/Screens/login_screen.dart';
 import 'package:licenta/Screens/main_screen.dart';
 
 class Onboarding3 extends StatefulWidget {
@@ -73,7 +74,7 @@ class _Onboarding3State extends State<Onboarding3> {
             child: GestureDetector(
               onTap: () => Navigator.pushAndRemoveUntil(
                   context,
-                  MaterialPageRoute(builder: (context) => HomeScreen()),
+                  MaterialPageRoute(builder: (context) => LoginScreen()),
                   (Route<dynamic> route) => false),
               child: Container(
                 decoration: const BoxDecoration(
