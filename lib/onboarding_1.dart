@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:licenta/Screens/login_screen.dart';
 import 'package:licenta/Screens/main_screen.dart';
 import 'package:licenta/onboarding_2.dart';
 
@@ -99,8 +100,8 @@ class _Onboarding1State extends State<Onboarding1> {
             ),
           ),
           GestureDetector(
-            onTap: () => Navigator.push(
-                context, MaterialPageRoute(builder: (context) => HomeScreen())),
+            onTap: () => Navigator.push(context,
+                MaterialPageRoute(builder: (context) => LoginScreen())),
             child: SizedBox(
               width: size.width,
               height: 50,

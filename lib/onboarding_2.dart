@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:licenta/Screens/login_screen.dart';
 import 'package:licenta/Screens/main_screen.dart';
 import 'package:licenta/onboarding_3.dart';
 
@@ -102,7 +103,7 @@ class _Onboarding2State extends State<Onboarding2> {
             padding: const EdgeInsets.all(8.0),
             child: GestureDetector(
               onTap: () => Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => HomeScreen())),
+                  MaterialPageRoute(builder: (context) => LoginScreen())),
               child: SizedBox(
                 width: size.width,
                 height: 50,

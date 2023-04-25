@@ -2,22 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:licenta/Screens/main_screen.dart';
-import 'package:licenta/Screens/profile_screen.dart';
+import 'package:licenta/Screens/statistics_screen.dart';
 
-class StatisticsScreen extends StatefulWidget {
-  const StatisticsScreen({super.key});
+class ProfileScreen extends StatefulWidget {
+  const ProfileScreen({super.key});
 
   @override
-  State<StatisticsScreen> createState() => _StatisticsScreenState();
+  State<ProfileScreen> createState() => _ProfileScreenState();
 }
 
-class _StatisticsScreenState extends State<StatisticsScreen> {
-  int _selectedIndex = 1;
+class _ProfileScreenState extends State<ProfileScreen> {
+  int _selectedIndex = 2;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('test'),
+        title: Text('profile'),
         automaticallyImplyLeading: false,
         backgroundColor: Color(0xffd5c8c5),
       ),
@@ -58,6 +58,11 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
             },
           );
         },
+      ),
+      body: Column(
+        children: [
+          Text('Hello Iulia'),
+        ],
       ),
     );
   }

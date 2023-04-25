@@ -33,12 +33,29 @@ class AuthService {
         email: email,
         password: password,
       );
-      return 'Success';
+      return null;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         return 'No user found for that email.';
       } else if (e.code == 'wrong-password') {
         return 'Wrong password provided for that user.';
+      } else {
+        return e.message;
+      }
+    } catch (e) {
+      return e.toString();
+    }
+  }
+
+  Future<String?> recoverPassword({required String email}) async {
+    try {
+      await FirebaseAuth.instance.sendPasswordResetEmail(
+        email: email,
+      );
+      return 'An email with password recovery instructions has been sent to your email address.';
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        return 'No user found for that email.';
       } else {
         return e.message;
       }

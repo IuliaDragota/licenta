@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:licenta/Screens/Expenses_screen.dart';
+import 'package:licenta/Screens/profile_screen.dart';
+import 'package:licenta/Screens/statistics_screen.dart';
 
 import 'package:licenta/Screens/transactions_screen.dart';
 
-class HomeScreen extends StatelessWidget {
-  static const routeName = '/home-screen';
+class HomeScreen extends StatefulWidget {
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  int _selectedIndex = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -13,7 +20,46 @@ class HomeScreen extends StatelessWidget {
           'Overview',
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
-        backgroundColor: Colors.grey,
+        automaticallyImplyLeading: false,
+        backgroundColor: Color(0xffd5c8c5),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: <BottomNavigationBarItem>[
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.query_stats_outlined), label: 'Statistics'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.person_2_outlined), label: 'Profile'),
+        ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: Color(0xFFB494DB),
+        onTap: (int index) {
+          switch (index) {
+            case 0:
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (_) => HomeScreen()),
+              );
+
+              break;
+            case 1:
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (_) => StatisticsScreen()),
+              );
+
+              break;
+            case 2:
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (_) => ProfileScreen()),
+              );
+
+              break;
+          }
+          setState(
+            () {
+              _selectedIndex = index;
+            },
+          );
+        },
       ),
       body: Padding(
         padding: const EdgeInsets.all(15),
@@ -40,7 +86,8 @@ class HomeScreen extends StatelessWidget {
                       padding: EdgeInsets.all(15),
                       decoration: BoxDecoration(
                           border: Border(
-                              top: BorderSide(color: Colors.grey, width: 8))),
+                              top: BorderSide(
+                                  color: Color(0xffd5c8c5), width: 8))),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -77,7 +124,7 @@ class HomeScreen extends StatelessWidget {
                                 'Add Transaction',
                                 style: TextStyle(
                                   fontSize: 18.0,
-                                  color: Colors.blue,
+                                  color: Color(0xFFB494DB),
                                 ),
                               ),
                             ),
@@ -106,7 +153,7 @@ class HomeScreen extends StatelessWidget {
                           decoration: BoxDecoration(
                               border: Border(
                                   top: BorderSide(
-                                      color: Colors.grey, width: 8))),
+                                      color: Color(0xffd5c8c5), width: 8))),
                           child: Text('Goals')),
                     ),
                   ),
@@ -128,7 +175,7 @@ class HomeScreen extends StatelessWidget {
                           decoration: BoxDecoration(
                               border: Border(
                                   top: BorderSide(
-                                      color: Colors.grey, width: 8))),
+                                      color: Color(0xffd5c8c5), width: 8))),
                           child: Text('Spent today')),
                     ),
                   ),
@@ -151,7 +198,8 @@ class HomeScreen extends StatelessWidget {
                       padding: EdgeInsets.all(15),
                       decoration: BoxDecoration(
                           border: Border(
-                              top: BorderSide(color: Colors.grey, width: 8))),
+                              top: BorderSide(
+                                  color: Color(0xffd5c8c5), width: 8))),
                       child: Text('News')),
                 ),
               ),

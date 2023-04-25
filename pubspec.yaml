@@ -38,6 +38,9 @@ dependencies:
   charts_flutter: ^0.12.0
   firebase_core: ^2.9.0
   firebase_auth: ^4.4.0
+  simple_animations: ^5.0.0+3
+  flutter_animations: ^0.0.1+10
+  flutter_login: ^4.1.1
 
 dev_dependencies:
   flutter_test:
