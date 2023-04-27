@@ -17,13 +17,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('profile'),
+        title: Text('profile', style: TextStyle(color: Colors.black)),
         automaticallyImplyLeading: false,
-        backgroundColor: Color(0xffd5c8c5),
+        backgroundColor: Color(0xffE6DEF0),
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(
+              icon: Icon(
+                Icons.home,
+              ),
+              label: 'Home'),
           BottomNavigationBarItem(
               icon: Icon(Icons.query_stats_outlined), label: 'Statistics'),
           BottomNavigationBarItem(
@@ -59,10 +63,43 @@ class _ProfileScreenState extends State<ProfileScreen> {
           );
         },
       ),
-      body: Column(
-        children: [
-          Text('Hello Iulia'),
-        ],
+      body: Padding(
+        padding: const EdgeInsets.all(15),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Center(child: Text('Hello Iulia')),
+            SizedBox(
+              height: 50,
+            ),
+            Center(
+              child: SizedBox(
+                  height: 70,
+                  width: 300,
+                  child: ElevatedButton(
+                      onPressed: () {},
+                      child: Text(
+                        'Edit',
+                        style: TextStyle(color: Colors.black, fontSize: 25),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                          primary: Color(0xffE6DEF0)))),
+            ),
+            SizedBox(
+              height: 30,
+            ),
+            Center(
+              child: SizedBox(
+                  height: 70,
+                  width: 300,
+                  child: ElevatedButton(
+                    onPressed: () {},
+                    child: Text('Logout'),
+                    style: ElevatedButton.styleFrom(primary: Color(0xFFc1dedc)),
+                  )),
+            ),
+          ],
+        ),
       ),
     );
   }

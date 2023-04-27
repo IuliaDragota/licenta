@@ -31,6 +31,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  http: ^0.13.5
+  cached_network_image: ^3.2.3
+  webview_flutter: ^0.3.19+9
   cupertino_icons: ^1.0.2
 
   introduction_screen: ^3.1.4
@@ -41,6 +44,7 @@ dependencies:
   simple_animations: ^5.0.0+3
   flutter_animations: ^0.0.1+10
   flutter_login: ^4.1.1
+  pie_chart: ^5.3.2
 
 dev_dependencies:
   flutter_test:

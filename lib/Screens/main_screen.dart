@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:licenta/Screens/Expenses_screen.dart';
+import 'package:licenta/Screens/financial_school_screen.dart';
+import 'package:licenta/Screens/goals_screen.dart';
+import 'package:licenta/Screens/news_home_screen.dart';
 import 'package:licenta/Screens/profile_screen.dart';
 import 'package:licenta/Screens/statistics_screen.dart';
 
@@ -18,10 +21,10 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: Text(
           'Overview',
-          style: TextStyle(fontWeight: FontWeight.bold),
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
         ),
         automaticallyImplyLeading: false,
-        backgroundColor: Color(0xffd5c8c5),
+        backgroundColor: Color(0xffE6DEF0),
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: <BottomNavigationBarItem>[
@@ -73,6 +76,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   );
                 },
                 child: Card(
+                  color: Color(0xFFf0edea),
                   elevation: 10,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(Radius.circular(10))),
@@ -84,10 +88,11 @@ class _HomeScreenState extends State<HomeScreen> {
                       height: 200,
                       width: 400,
                       padding: EdgeInsets.all(15),
-                      decoration: BoxDecoration(
-                          border: Border(
-                              top: BorderSide(
-                                  color: Color(0xffd5c8c5), width: 8))),
+                      // decoration: BoxDecoration(
+
+                      //     border: Border(
+                      //         top: BorderSide(
+                      //             color: Color(0xFFc1dedc), width: 8))),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -124,7 +129,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 'Add Transaction',
                                 style: TextStyle(
                                   fontSize: 18.0,
-                                  color: Color(0xFFB494DB),
+                                  color: Color(0xFFc1dedc),
                                 ),
                               ),
                             ),
@@ -138,45 +143,61 @@ class _HomeScreenState extends State<HomeScreen> {
               SizedBox(height: 10),
               Row(
                 children: [
-                  Card(
-                    elevation: 10,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10))),
-                    child: ClipPath(
-                      clipper: ShapeBorderClipper(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10))),
-                      child: Container(
-                          height: 150,
-                          width: 150,
-                          padding: EdgeInsets.all(15),
-                          decoration: BoxDecoration(
-                              border: Border(
-                                  top: BorderSide(
-                                      color: Color(0xffd5c8c5), width: 8))),
-                          child: Text('Goals')),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(builder: (_) => GoalsScreen()),
+                      );
+                    },
+                    child: Card(
+                      color: Color(0xFFe6def0),
+                      elevation: 10,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10))),
+                      child: ClipPath(
+                        clipper: ShapeBorderClipper(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10))),
+                        child: Container(
+                            height: 150,
+                            width: 150,
+                            padding: EdgeInsets.all(15),
+                            // decoration: BoxDecoration(
+                            //     border: Border(
+                            //         top: BorderSide(
+                            //             color: Color(0xFFc1dedc), width: 8))),
+                            child: Text('Goals')),
+                      ),
                     ),
                   ),
                   SizedBox(
                     width: 15,
                   ),
-                  Card(
-                    elevation: 10,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10))),
-                    child: ClipPath(
-                      clipper: ShapeBorderClipper(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10))),
-                      child: Container(
-                          height: 150,
-                          width: 150,
-                          padding: EdgeInsets.all(15),
-                          decoration: BoxDecoration(
-                              border: Border(
-                                  top: BorderSide(
-                                      color: Color(0xffd5c8c5), width: 8))),
-                          child: Text('Spent today')),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(builder: (_) => ExpensesScreen()),
+                      );
+                    },
+                    child: Card(
+                      color: Color(0xFFc1dedc),
+                      elevation: 10,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10))),
+                      child: ClipPath(
+                        clipper: ShapeBorderClipper(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10))),
+                        child: Container(
+                            height: 150,
+                            width: 150,
+                            padding: EdgeInsets.all(15),
+                            // decoration: BoxDecoration(
+                            //     border: Border(
+                            //         top: BorderSide(
+                            //             color: Color(0xffd5c8c5), width: 8))),
+                            child: Text('Spent today')),
+                      ),
                     ),
                   ),
                 ],
@@ -184,23 +205,59 @@ class _HomeScreenState extends State<HomeScreen> {
               SizedBox(
                 height: 10,
               ),
-              Card(
-                elevation: 10,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(10))),
-                child: ClipPath(
-                  clipper: ShapeBorderClipper(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10))),
-                  child: Container(
-                      height: 100,
-                      width: 400,
-                      padding: EdgeInsets.all(15),
-                      decoration: BoxDecoration(
-                          border: Border(
-                              top: BorderSide(
-                                  color: Color(0xffd5c8c5), width: 8))),
-                      child: Text('News')),
+              GestureDetector(
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(builder: (_) => NewsHomeScreen()),
+                  );
+                },
+                child: Card(
+                    color: Color(0xFFf0edea),
+                    elevation: 10,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10))),
+                    child: ClipPath(
+                        clipper: ShapeBorderClipper(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10))),
+                        child: Container(
+                            height: 100,
+                            width: 400,
+                            padding: EdgeInsets.all(15),
+                            // decoration: BoxDecoration(
+                            //     border: Border(
+                            //         top: BorderSide(
+                            //             color: Color(0xffd5c8c5), width: 8))),
+                            child: Text('News')))),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              GestureDetector(
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(builder: (_) => FinanciaSchool()),
+                  );
+                },
+                child: Card(
+                  color: Color(0xFFc1dedc),
+                  elevation: 10,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10))),
+                  child: ClipPath(
+                    clipper: ShapeBorderClipper(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10))),
+                    child: Container(
+                        height: 100,
+                        width: 400,
+                        padding: EdgeInsets.all(15),
+                        // decoration: BoxDecoration(
+                        //     border: Border(
+                        //         top: BorderSide(
+                        //             color: Color(0xffd5c8c5), width: 8))),
+                        child: Text('School')),
+                  ),
                 ),
               ),
             ],
