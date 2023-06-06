@@ -70,6 +70,10 @@ class _NewsScreenState extends State<NewsHomeScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
         title: Row(
           children: <Widget>[
             Text(

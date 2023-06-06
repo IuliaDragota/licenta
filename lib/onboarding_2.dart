@@ -54,7 +54,7 @@ class _Onboarding2State extends State<Onboarding2> {
           const Padding(
             padding: EdgeInsets.symmetric(horizontal: 8),
             child: Text(
-              'AdaKita Guarantees The Safety Of Money With Double Security',
+              'Learn how to manage your money',
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 34, fontWeight: FontWeight.bold),
             ),
@@ -62,7 +62,7 @@ class _Onboarding2State extends State<Onboarding2> {
           const Padding(
             padding: EdgeInsets.symmetric(vertical: 8),
             child: Text(
-              'You don\'t have to worry because we are\n under state surveilance',
+              'Step by step',
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 16),
             ),

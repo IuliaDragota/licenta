@@ -56,7 +56,7 @@ class _Onboarding3State extends State<Onboarding3> {
           const Padding(
             padding: EdgeInsets.all(8.0),
             child: Text(
-              'Earn points and spend your points like you use your money',
+              'Keep your eyes on the tranzactions',
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 34, fontWeight: FontWeight.bold),
             ),
@@ -64,7 +64,7 @@ class _Onboarding3State extends State<Onboarding3> {
           const Padding(
             padding: EdgeInsets.symmetric(vertical: 8),
             child: Text(
-              'Every time you shoo you will always\n get points that you can reuse these points',
+              'And read the News on you free time',
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 16),
             ),

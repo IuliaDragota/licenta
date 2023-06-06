@@ -1,7 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
+class CustomError implements Exception {
+  final String message;
+
+  CustomError(this.message);
+}
+
 class AuthService {
-  Future<String?> registration({
+  Future<CustomError?> registration({
     required String email,
     required String password,
   }) async {
@@ -10,21 +16,21 @@ class AuthService {
         email: email,
         password: password,
       );
-      return 'Success';
+      return null;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
-        return 'The password provided is too weak.';
+        return CustomError('The password provided is too weak.');
       } else if (e.code == 'email-already-in-use') {
-        return 'The account already exists for that email.';
+        return CustomError('The account already exists for that email.');
       } else {
-        return e.message;
+        return CustomError(e.message ?? 'Something bad happened');
       }
     } catch (e) {
-      return e.toString();
+      return CustomError(e.toString());
     }
   }
 
-  Future<String?> login({
+  Future<CustomError?> login({
     required String email,
     required String password,
   }) async {
@@ -36,14 +42,14 @@ class AuthService {
       return null;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
-        return 'No user found for that email.';
+        return CustomError('No user found for that email.');
       } else if (e.code == 'wrong-password') {
-        return 'Wrong password provided for that user.';
+        return CustomError('Wrong password provided for that user.');
       } else {
-        return e.message;
+        return CustomError(e.message ?? 'Something bad happened');
       }
     } catch (e) {
-      return e.toString();
+      return CustomError(e.toString());
     }
   }
 

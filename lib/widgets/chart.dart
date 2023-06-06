@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:intl/intl.dart';
-import 'package:licenta/models/transaction.dart';
+import 'package:licenta/models/user_transaction.dart';
 
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
 
 class SimpleBarChart extends StatelessWidget {
-  final List<Transaction> recentTransactions;
+  final List<UserTransaction> recentTransactions;
   final bool animate;
 
   SimpleBarChart(this.recentTransactions, {required this.animate});

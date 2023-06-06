@@ -56,7 +56,7 @@ class _Onboarding1State extends State<Onboarding1> {
           const Padding(
             padding: EdgeInsets.all(8.0),
             child: Text(
-              'Saving Is Now Easier, More Practical, And Safer With AdaKita',
+              'Welcome to FINANCE',
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 34, fontWeight: FontWeight.bold),
             ),
@@ -64,7 +64,7 @@ class _Onboarding1State extends State<Onboarding1> {
           const Padding(
             padding: EdgeInsets.symmetric(vertical: 8),
             child: Text(
-              'Storing safely, accurately and reliably,\n who else if not us, save now!',
+              'Saving Is Now Easier and more Practical!',
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 16),
             ),

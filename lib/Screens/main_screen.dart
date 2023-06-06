@@ -1,269 +1,268 @@
 import 'package:flutter/material.dart';
-import 'package:licenta/Screens/Expenses_screen.dart';
+import 'package:licenta/Screens/expenses_screen.dart';
 import 'package:licenta/Screens/financial_school_screen.dart';
 import 'package:licenta/Screens/goals_screen.dart';
 import 'package:licenta/Screens/news_home_screen.dart';
-import 'package:licenta/Screens/profile_screen.dart';
-import 'package:licenta/Screens/statistics_screen.dart';
-
-import 'package:licenta/Screens/transactions_screen.dart';
+import 'package:licenta/models/user_transaction.dart';
+import 'package:licenta/services/transaction_service.dart';
+import 'package:licenta/services/transactions_provider.dart';
+import 'package:licenta/widgets/bottom_navigation_bar.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int _selectedIndex = 0;
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<Transactions>(context, listen: false).fetchTransactions();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'Overview',
           style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
         ),
         automaticallyImplyLeading: false,
-        backgroundColor: Color(0xffE6DEF0),
+        backgroundColor: const Color(0xffE6DEF0),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.query_stats_outlined), label: 'Statistics'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.person_2_outlined), label: 'Profile'),
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: Color(0xFFB494DB),
-        onTap: (int index) {
-          switch (index) {
-            case 0:
-              Navigator.of(context).push(
-                MaterialPageRoute(builder: (_) => HomeScreen()),
-              );
-
-              break;
-            case 1:
-              Navigator.of(context).push(
-                MaterialPageRoute(builder: (_) => StatisticsScreen()),
-              );
-
-              break;
-            case 2:
-              Navigator.of(context).push(
-                MaterialPageRoute(builder: (_) => ProfileScreen()),
-              );
-
-              break;
-          }
-          setState(
-            () {
-              _selectedIndex = index;
-            },
-          );
-        },
-      ),
+      bottomNavigationBar: const CustomNavigationBar(selectedIndex: 0),
       body: Padding(
-        padding: const EdgeInsets.all(15),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              GestureDetector(
-                onTap: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(builder: (_) => TransactionsScreen()),
-                  );
-                },
-                child: Card(
-                  color: Color(0xFFf0edea),
-                  elevation: 10,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(10))),
-                  child: ClipPath(
-                    clipper: ShapeBorderClipper(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10))),
-                    child: Container(
-                      height: 200,
-                      width: 400,
-                      padding: EdgeInsets.all(15),
-                      // decoration: BoxDecoration(
-
-                      //     border: Border(
-                      //         top: BorderSide(
-                      //             color: Color(0xFFc1dedc), width: 8))),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Align(
-                            alignment: Alignment.topLeft,
-                            child: Text(
-                              'Your Balance',
-                              style: TextStyle(
-                                fontSize: 17,
-                                fontWeight: FontWeight.bold,
-                              ),
+          padding: const EdgeInsets.all(15),
+          child: Consumer<Transactions>(
+            builder: (context, transactionsProvider, _) {
+              if (transactionsProvider.isLoading) {
+                return const Center(
+                    child: CircularProgressIndicator(color: Color(0xFFB494DB)));
+              }
+              return SingleChildScrollView(
+                child: Column(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                              builder: (_) => ExpensesScreen(
+                                  title: 'Personal Expenses',
+                                  transactions:
+                                      transactionsProvider.transactions)),
+                        );
+                      },
+                      child: Card(
+                        color: const Color(0xFFf0edea),
+                        elevation: 10,
+                        shape: const RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(10))),
+                        child: ClipPath(
+                          clipper: ShapeBorderClipper(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10))),
+                          child: Container(
+                            height: 200,
+                            padding: const EdgeInsets.all(15),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Align(
+                                  alignment: Alignment.topLeft,
+                                  child: Text(
+                                    'Latest Transaction',
+                                    style: TextStyle(
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(height: 10.0),
+                                Text(
+                                  transactionsProvider
+                                      .computeLatestTransactionText(),
+                                  style: const TextStyle(
+                                    fontSize: 35.0,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                const Divider(),
+                                const Align(
+                                  alignment: Alignment.bottomLeft,
+                                  child: Text(
+                                    'Add Transaction',
+                                    style: TextStyle(
+                                      fontSize: 18.0,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                          SizedBox(height: 10.0),
-                          Text(
-                            '\$1000.00',
-                            style: TextStyle(
-                              fontSize: 35.0,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Divider(),
-                          GestureDetector(
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: GestureDetector(
                             onTap: () {
                               Navigator.of(context).push(
                                 MaterialPageRoute(
-                                    builder: (_) => ExpensesScreen()),
+                                    builder: (_) => GoalsScreen()),
                               );
                             },
-                            child: Align(
-                              alignment: Alignment.bottomLeft,
-                              child: Text(
-                                'Add Transaction',
-                                style: TextStyle(
-                                  fontSize: 18.0,
-                                  color: Color(0xFFc1dedc),
-                                ),
+                            child: Card(
+                              color: const Color(0xFFe6def0),
+                              elevation: 10,
+                              shape: const RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10))),
+                              child: ClipPath(
+                                clipper: ShapeBorderClipper(
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10))),
+                                child: Container(
+                                    height: 100,
+                                    padding: const EdgeInsets.all(15),
+                                    child: const Center(
+                                        child: Text(
+                                      'Goals',
+                                      style: TextStyle(fontSize: 20),
+                                    ))),
                               ),
                             ),
                           ),
-                        ],
+                        ),
+                        const SizedBox(
+                          width: 15,
+                        ),
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                    builder: (_) => ExpensesScreen(
+                                        title: 'Spent today',
+                                        transactions: transactionsProvider
+                                            .todayTransactions)),
+                              );
+                            },
+                            child: Card(
+                              color: const Color(0xFFc1dedc),
+                              elevation: 10,
+                              shape: const RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10))),
+                              child: ClipPath(
+                                clipper: ShapeBorderClipper(
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10))),
+                                child: Container(
+                                    height: 100,
+                                    padding: const EdgeInsets.all(15),
+                                    child: const Center(
+                                        child: Text(
+                                      'Spent today',
+                                      style: TextStyle(fontSize: 20),
+                                    ))),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                              builder: (_) => const NewsHomeScreen()),
+                        );
+                      },
+                      child: Card(
+                          color: const Color(0xFFf0edea),
+                          elevation: 10,
+                          shape: const RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10))),
+                          child: ClipPath(
+                              clipper: ShapeBorderClipper(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10))),
+                              child: Container(
+                                  height: 100,
+                                  width: 400,
+                                  padding: const EdgeInsets.all(15),
+                                  child: const Center(
+                                      child: Text(
+                                    'See the latest News',
+                                    style: TextStyle(fontSize: 20),
+                                  ))))),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                              builder: (_) => const FinanciaSchool()),
+                        );
+                      },
+                      child: Card(
+                        color: const Color(0xFFc1dedc),
+                        elevation: 10,
+                        shape: const RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(10))),
+                        child: ClipPath(
+                          clipper: ShapeBorderClipper(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10))),
+                          child: Container(
+                              height: 100,
+                              width: 400,
+                              padding: const EdgeInsets.all(15),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: const [
+                                  Text(
+                                    'Financial School',
+                                    style: TextStyle(fontSize: 20),
+                                  ),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  Text(
+                                    'Learn how to make your money work for you',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  )
+                                ],
+                              )),
+                        ),
                       ),
                     ),
-                  ),
+                  ],
                 ),
-              ),
-              SizedBox(height: 10),
-              Row(
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(builder: (_) => GoalsScreen()),
-                      );
-                    },
-                    child: Card(
-                      color: Color(0xFFe6def0),
-                      elevation: 10,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(10))),
-                      child: ClipPath(
-                        clipper: ShapeBorderClipper(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10))),
-                        child: Container(
-                            height: 150,
-                            width: 150,
-                            padding: EdgeInsets.all(15),
-                            // decoration: BoxDecoration(
-                            //     border: Border(
-                            //         top: BorderSide(
-                            //             color: Color(0xFFc1dedc), width: 8))),
-                            child: Text('Goals')),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 15,
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(builder: (_) => ExpensesScreen()),
-                      );
-                    },
-                    child: Card(
-                      color: Color(0xFFc1dedc),
-                      elevation: 10,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(10))),
-                      child: ClipPath(
-                        clipper: ShapeBorderClipper(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10))),
-                        child: Container(
-                            height: 150,
-                            width: 150,
-                            padding: EdgeInsets.all(15),
-                            // decoration: BoxDecoration(
-                            //     border: Border(
-                            //         top: BorderSide(
-                            //             color: Color(0xffd5c8c5), width: 8))),
-                            child: Text('Spent today')),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              GestureDetector(
-                onTap: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(builder: (_) => NewsHomeScreen()),
-                  );
-                },
-                child: Card(
-                    color: Color(0xFFf0edea),
-                    elevation: 10,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10))),
-                    child: ClipPath(
-                        clipper: ShapeBorderClipper(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10))),
-                        child: Container(
-                            height: 100,
-                            width: 400,
-                            padding: EdgeInsets.all(15),
-                            // decoration: BoxDecoration(
-                            //     border: Border(
-                            //         top: BorderSide(
-                            //             color: Color(0xffd5c8c5), width: 8))),
-                            child: Text('News')))),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              GestureDetector(
-                onTap: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(builder: (_) => FinanciaSchool()),
-                  );
-                },
-                child: Card(
-                  color: Color(0xFFc1dedc),
-                  elevation: 10,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(10))),
-                  child: ClipPath(
-                    clipper: ShapeBorderClipper(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10))),
-                    child: Container(
-                        height: 100,
-                        width: 400,
-                        padding: EdgeInsets.all(15),
-                        // decoration: BoxDecoration(
-                        //     border: Border(
-                        //         top: BorderSide(
-                        //             color: Color(0xffd5c8c5), width: 8))),
-                        child: Text('School')),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
+              );
+            },
+          )),
     );
   }
 }

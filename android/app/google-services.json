@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "674174792223",
+    "firebase_url": "https://licentafinancialapp-default-rtdb.europe-west1.firebasedatabase.app",
     "project_id": "licentafinancialapp",
     "storage_bucket": "licentafinancialapp.appspot.com"
   },
@@ -29,6 +30,13 @@
             {
               "client_id": "674174792223-11jspp1sg58ghal0lfmi93kq1i9laukl.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "674174792223-t2da8vpej2qg6t9rtpos7qcf4uun90ci.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.licenta"
+              }
             }
           ]
         }

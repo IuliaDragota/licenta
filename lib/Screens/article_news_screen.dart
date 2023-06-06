@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-import 'dart:async';
 
 class ArticleNewsScreen extends StatefulWidget {
-  const ArticleNewsScreen({required this.blogUrl});
+  const ArticleNewsScreen({super.key, required this.blogUrl});
 
   final String blogUrl;
 
@@ -14,16 +11,27 @@ class ArticleNewsScreen extends StatefulWidget {
 }
 
 class _ArticleNewsScreenState extends State<ArticleNewsScreen> {
-  final Completer<WebViewController> _completer =
-      Completer<WebViewController>();
+  late final WebViewController controller;
+
+  @override
+  void initState() {
+    super.initState();
+    controller = WebViewController()
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..loadRequest(Uri.parse(widget.blogUrl));
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
         title: Row(
-          children: <Widget>[
+          children: const <Widget>[
             Text(
               'Your',
               style: TextStyle(color: Colors.black),
@@ -38,22 +46,17 @@ class _ArticleNewsScreenState extends State<ArticleNewsScreen> {
           Opacity(
             opacity: 0,
             child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 16),
             ),
           )
         ],
         centerTitle: true,
         elevation: 0.0,
       ),
-      body: Container(
+      body: SizedBox(
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
-          child: WebView(
-            initialUrl: widget.blogUrl,
-            onWebViewCreated: ((WebViewController webViewController) {
-              _completer.complete(webViewController);
-            }),
-          )),
+          child: WebViewWidget(controller: controller)),
     );
   }
 }

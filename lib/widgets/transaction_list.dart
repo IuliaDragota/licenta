@@ -1,15 +1,14 @@
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
-
 import 'package:flutter/material.dart';
-import 'package:licenta/models/transaction.dart';
+import 'package:licenta/models/user_transaction.dart';
 import 'package:intl/intl.dart';
+import 'package:licenta/models/transaction_category.dart';
 
 class TransactionList extends StatelessWidget {
-  final List<Transaction> transactions;
+  final List<UserTransaction> transactions;
   final Function deletetx;
+  final Function didSelect;
 
-  TransactionList(this.transactions, this.deletetx);
+  const TransactionList(this.transactions, this.deletetx, this.didSelect, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -18,18 +17,11 @@ class TransactionList extends StatelessWidget {
             return Column(
               children: <Widget>[
                 Text(
-                  'No  transactions added yet!',
+                  'No transactions added yet!',
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20, //pentru spatiu intre text si imagine
-                ),
-                Container(
-                  height: constraints.maxHeight * 0.6,
-                  child: Image.asset(
-                    'assets/images/waiting.png',
-                    fit: BoxFit.cover, //ia marimea direct de la parinte
-                  ),
                 ),
               ],
             );
@@ -38,7 +30,7 @@ class TransactionList extends StatelessWidget {
             itemBuilder: (ctx, index) {
               return Card(
                 elevation: 5,
-                margin: EdgeInsets.symmetric(
+                margin: const EdgeInsets.symmetric(
                   vertical: 8,
                   horizontal: 5,
                 ),
@@ -48,29 +40,41 @@ class TransactionList extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.all(6),
                       child: FittedBox(
-                          child: Text('\$${transactions[index].amount}')),
+                          child: Text('${transactions[index].amount}')),
                     ),
                   ),
-                  title: Text(
-                    transactions[index].title,
-                    style: Theme.of(context).textTheme.titleMedium,
+                  title: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        transactions[index].title,
+                          style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)
+                      ),
+                      Text(
+                        transactions[index].category.stringValue(),
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
+                    ],
                   ),
                   subtitle: Text(
                     DateFormat.yMMMd().format(transactions[index].date),
                   ),
                   trailing: MediaQuery.of(context).size.width > 460
                       ? TextButton.icon(
-                          icon: Icon(Icons.delete),
-                          label: Text('Delete'),
+                          icon: const Icon(Icons.delete),
+                          label: const Text('Delete'),
                           style: TextButton.styleFrom(
                               primary: Theme.of(context).errorColor),
                           onPressed: () => deletetx(transactions[index].id),
                         )
                       : IconButton(
-                          icon: Icon(Icons.delete),
+                          icon: const Icon(Icons.delete),
                           color: Theme.of(context).errorColor,
                           onPressed: () => deletetx(transactions[index].id),
                         ),
+                  onTap: () => {
+                    didSelect(transactions[index])
+                  },
                 ),
               );
             },

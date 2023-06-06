@@ -139,28 +139,26 @@ class LoginScreen extends StatelessWidget {
   Duration get loginTime => Duration(milliseconds: 2250);
   final authService = AuthService();
 
-  Future<String?> _authUser(LoginData data) {
+  Future<String?> _authUser(LoginData data) async {
     debugPrint('Name: ${data.name}, Password: ${data.password}');
-    // return Future.delayed(loginTime).then((_) {
-    //   if (!users.containsKey(data.name)) {
-    //     return 'User not exists';
-    //   }
-    //   if (users[data.name] != data.password) {
-    //     return 'Password does not match';
-    //   }
-    //   return null;
-    // });
 
-    return authService.login(email: data.name, password: data.password);
+    final error = await authService.login(
+      email: data.name,
+      password: data.password,
+    );
+
+    return error?.message;
   }
 
-  Future<String?> _signupUser(SignupData data) {
+  Future<String?> _signupUser(SignupData data) async {
     debugPrint('Signup Name: ${data.name}, Password: ${data.password}');
-    // return Future.delayed(loginTime).then((_) {
-    //   return null;
+    
+    final error =  await authService.registration(
+        email: data.name.toString(),
+        password: data.password.toString()
+    );
 
-    return authService.registration(
-        email: data.name.toString(), password: data.password.toString());
+    return error?.message;
   }
 
   Future<String> _recoverPassword(String name) {
@@ -191,7 +189,7 @@ class LoginScreen extends StatelessWidget {
           errorColor: Colors.deepOrange,
           titleStyle: TextStyle(
             fontSize: 55,
-            color: Color.fromARGB(255, 205, 169, 209),
+            color: Color.fromARGB(255, 54, 54, 54),
           ),
         ));
   }

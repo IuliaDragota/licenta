@@ -33,7 +33,7 @@ dependencies:
     sdk: flutter
   http: ^0.13.5
   cached_network_image: ^3.2.3
-  webview_flutter: ^0.3.19+9
+  webview_flutter: ^4.2.1
   cupertino_icons: ^1.0.2
 
   introduction_screen: ^3.1.4
@@ -42,9 +42,11 @@ dependencies:
   firebase_core: ^2.9.0
   firebase_auth: ^4.4.0
   simple_animations: ^5.0.0+3
-  flutter_animations: ^0.0.1+10
   flutter_login: ^4.1.1
   pie_chart: ^5.3.2
+  flutter_picker: ^2.1.0
+  firebase_database: ^10.2.1
+  provider: ^6.0.5
 
 dev_dependencies:
   flutter_test:

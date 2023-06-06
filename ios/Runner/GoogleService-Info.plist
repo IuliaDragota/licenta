@@ -30,5 +30,7 @@
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
 	<string>1:674174792223:ios:fdbd0ca8ebb19160d91b2a</string>
+	<key>DATABASE_URL</key>
+	<string>https://licentafinancialapp-default-rtdb.europe-west1.firebasedatabase.app</string>
 </dict>
 </plist>

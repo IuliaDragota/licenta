@@ -1,12 +1,15 @@
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_picker/flutter_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:licenta/models/transaction_category.dart';
+import 'package:licenta/models/user_transaction.dart';
 
 class NewTransaction extends StatefulWidget {
+  UserTransaction? transaction;
   final Function addTx;
+  Function(UserTransaction) editTx;
 
-  NewTransaction(this.addTx);
+  NewTransaction(this.addTx, this.transaction, this.editTx, {super.key});
 
   @override
   State<NewTransaction> createState() => _NewTransactionState();
@@ -16,32 +19,61 @@ class _NewTransactionState extends State<NewTransaction> {
   final _titleController = TextEditingController();
   final _amountController = TextEditingController();
   DateTime _selectedDate = DateTime.now();
+  TransactionCategory _selectedCategory = TransactionCategory.others;
+
+  @override
+  void initState() {
+    UserTransaction? transaction = widget.transaction;
+    if (transaction == null) {
+      return;
+    }
+
+    _selectedDate = transaction.date;
+    _titleController.text = transaction.title;
+    _amountController.text = "${transaction.amount}";
+    _selectedCategory = transaction.category;
+    super.initState();
+  }
 
   void submitData() {
     if (_amountController.text.isEmpty) {
       return;
     }
+    final category = _selectedCategory;
     final date = _selectedDate;
     final enteredTitle = _titleController.text;
     final enteredAmount = double.parse(_amountController.text);
 
-    if (enteredTitle.isEmpty || enteredAmount <= 0 || _selectedDate == null) {
+    if (enteredTitle.isEmpty || enteredAmount <= 0) {
       return; // return opreste executia functiei!!!
     }
 
-    widget.addTx(
-      // codul acesta se executa in functie de if
-      date,
-      enteredTitle,
-      enteredAmount,
-    );
+    UserTransaction? transaction = widget.transaction;
+
+    if (transaction != null) {
+      widget.editTx(UserTransaction(
+          id: transaction.id,
+          title: enteredTitle,
+          amount: enteredAmount,
+          date: date,
+          category: category)
+      );
+    } else {
+      widget.addTx(
+        // codul acesta se executa in functie de if
+        date,
+        category,
+        enteredTitle,
+        enteredAmount,
+      );
+    }
     Navigator.of(context).pop();
   }
 
   void _presentDatePicker() {
     showDatePicker(
       context: context,
-      initialDate: DateTime.now(),
+      initialDate: _selectedDate,
       firstDate: DateTime(2022),
       lastDate: DateTime.now(),
     ).then((pickedDate) {
@@ -52,6 +84,25 @@ class _NewTransactionState extends State<NewTransaction> {
         _selectedDate = pickedDate;
       });
     });
+  }
+
+  void _presentCategoryPicker() {
+    List<TransactionCategory> categories = TransactionCategory.values;
+    List<String> categoryList = categories
+        .map((category) => category.stringValue())
+        .toList();
+
+    Picker(
+      adapter: PickerDataAdapter<String>(pickerData: categoryList),
+      selecteds: [_selectedCategory.index],
+      hideHeader: true,
+      title: const Text('Select Category'),
+      onConfirm: (Picker picker, List<int> value) {
+        setState(() {
+          _selectedCategory = TransactionCategory.values[picker.selecteds.first];
+        });
+      },
+    ).showDialog(context);
   }
 
   @override
@@ -70,18 +121,18 @@ class _NewTransactionState extends State<NewTransaction> {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: <Widget>[
               TextField(
-                decoration: InputDecoration(labelText: 'Title'),
+                decoration: const InputDecoration(labelText: 'Title'),
                 controller: _titleController,
                 onSubmitted: (_) => submitData(),
               ),
               TextField(
-                decoration: InputDecoration(labelText: 'Amount'),
+                decoration: const InputDecoration(labelText: 'Amount'),
                 keyboardType: TextInputType.number,
                 controller: _amountController,
                 onSubmitted: (_) =>
                     submitData(), // (_) --- dau un argument, dar nu imi pasa de el
               ),
-              Container(
+              SizedBox(
                 height: 70,
                 child: Row(
                   children: <Widget>[
@@ -94,12 +145,33 @@ class _NewTransactionState extends State<NewTransaction> {
                     ),
                     TextButton(
                       onPressed: _presentDatePicker,
-                      child: Text(
+                      style: TextButton.styleFrom(
+                          primary: Theme.of(context).primaryColor),
+                      child: const Text(
                         'Choose Date',
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 70,
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Text(
+                        'Category: ${_selectedCategory.stringValue()}',
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: _presentCategoryPicker,
                       style: TextButton.styleFrom(
                           primary: Theme.of(context).primaryColor),
+                      child: const Text(
+                        'Choose Category',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
                     ),
                   ],
                 ),
@@ -109,7 +181,7 @@ class _NewTransactionState extends State<NewTransaction> {
                 style: TextButton.styleFrom(
                   primary: Colors.white,
                 ),
-                child: Text('Add Transaction'),
+                child: Text('${widget.transaction == null ? 'Add' : 'Edit'} Transaction'),
               ),
             ],
           ),
