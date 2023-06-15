@@ -47,6 +47,8 @@ dependencies:
   flutter_picker: ^2.1.0
   firebase_database: ^10.2.1
   provider: ^6.0.5
+  flutter_feather_icons: ^2.0.0+1
+  flutter_svg: ^0.22.0
 
 dev_dependencies:
   flutter_test:

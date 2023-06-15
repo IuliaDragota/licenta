@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:licenta/models/user_transaction.dart';
 import 'package:licenta/models/transaction_category.dart';
-import 'package:licenta/services/transactions_provider.dart';
+import 'package:licenta/providers/transactions_provider.dart';
 import 'package:licenta/widgets/chart.dart';
 import 'package:licenta/widgets/new_transaction.dart';
 import 'package:licenta/widgets/transaction_list.dart';
@@ -9,8 +9,9 @@ import 'package:provider/provider.dart';
 
 class ExpensesScreen extends StatefulWidget {
   final String title;
-  final List<UserTransaction> transactions;
-  const ExpensesScreen({Key? key, required this.title, required this.transactions}) : super(key: key);
+  final bool showToday;
+  const ExpensesScreen({Key? key, required this.title, required this.showToday})
+      : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -21,17 +22,18 @@ class ExpensesScreen extends StatefulWidget {
 class _ExpensesScreenState extends State<ExpensesScreen> {
   bool _showChart = false;
 
-  List<UserTransaction> get recentTransactions {
-    return widget.transactions.where((tx) {
+  List<UserTransaction> recentTransactions(List<UserTransaction> transactions) {
+    return transactions.where((tx) {
       return tx.date.isAfter(
         DateTime.now().subtract(
-          const Duration(days: 7),
+          const Duration(days: 31),
         ),
       );
     }).toList();
   }
 
-  Future<void> _addNewTransaction(DateTime date, TransactionCategory category, String txTitle, double txAmount) async {
+  Future<void> _addNewTransaction(DateTime date, TransactionCategory category,
+      String txTitle, double txAmount) async {
     final newTx = UserTransaction(
       id: DateTime.now().toString(),
       title: txTitle,
@@ -49,9 +51,12 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
         builder: (_) {
           return GestureDetector(
             onTap: () {},
-            behavior: HitTestBehavior
-                .opaque,
-            child: NewTransaction(_addNewTransaction, null, (_) => {}), //important deoarece are grija sa nu se inchida cand apesi pe textbox
+            behavior: HitTestBehavior.opaque,
+            child: NewTransaction(
+                _addNewTransaction,
+                null,
+                (_) =>
+                    {}), //important deoarece are grija sa nu se inchida cand apesi pe textbox
           );
         });
   }
@@ -70,11 +75,14 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
         builder: (_) {
           return GestureDetector(
             onTap: () {},
-            behavior: HitTestBehavior
-                .opaque,
-            child: NewTransaction(() => {}, transaction, (editedTransaction) => {
-                Provider.of<Transactions>(context, listen: false).editTransaction(editedTransaction)
-            }),
+            behavior: HitTestBehavior.opaque,
+            child: NewTransaction(
+                () => {},
+                transaction,
+                (editedTransaction) => {
+                      Provider.of<Transactions>(context, listen: false)
+                          .editTransaction(editedTransaction)
+                    }),
           );
         });
   }
@@ -85,7 +93,8 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text('Confirm Deletion'),
-          content: const Text('Are you sure you want to delete this transaction?'),
+          content:
+              const Text('Are you sure you want to delete this transaction?'),
           actions: [
             TextButton(
               child: const Text(
@@ -102,7 +111,8 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
                 style: TextStyle(color: Colors.red),
               ),
               onPressed: () {
-                Provider.of<Transactions>(context, listen: false).deleteTransaction(id);
+                Provider.of<Transactions>(context, listen: false)
+                    .deleteTransaction(id);
                 Navigator.of(context).pop();
               },
             ),
@@ -119,28 +129,41 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
         final mediaQuery = MediaQuery.of(context);
         final isLandscape = mediaQuery.orientation == Orientation.landscape;
         final appBar = AppBar(
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back, color: Colors.black),
-            onPressed: () => Navigator.of(context).pop(),
-          ),
-          backgroundColor: const Color(0xffE6DEF0),
-          title: Text(
-            widget.title,
-            style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
-          ),
+            elevation: 0,
+            leading: IconButton(
+              icon: const Icon(Icons.arrow_back, color: Colors.black),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+            backgroundColor: Colors.white,
+            title: Center(
+              child: Text(
+                widget.title,
+                style: const TextStyle(
+                    fontWeight: FontWeight.bold, color: Colors.black),
+              ),
+            ),
             bottom: PreferredSize(
-              preferredSize: const Size.fromHeight(6.0),
-              child: transactionsProvider.isLoading ? const LinearProgressIndicator(color: Colors.deepPurpleAccent, backgroundColor: Color(0xFFB494DB)) : const SizedBox()
-            )
-        );
+                preferredSize: const Size.fromHeight(6.0),
+                child: transactionsProvider.isLoading
+                    ? const LinearProgressIndicator(
+                        color: Colors.deepPurpleAccent,
+                        backgroundColor: Color(0xFFB494DB))
+                    : const SizedBox()));
         final txListWidget = SizedBox(
-          height: (mediaQuery.size.height -
-              appBar.preferredSize.height -
-              mediaQuery.padding.top) *
-              0.7,
-          child: TransactionList(widget.transactions, _deleteTransaction, _didSelectTransaction)
-          //am stocat in variabila ca sa ma intorc mereu la ea pentru a amodifica ceva
-        );
+            height: (mediaQuery.size.height -
+                    appBar.preferredSize.height -
+                    mediaQuery.padding.top) *
+                0.7,
+            child: transactionsProvider.isLoading
+                ? const SizedBox()
+                : TransactionList(
+                    widget.showToday
+                        ? transactionsProvider.todayTransactions
+                        : transactionsProvider.transactions,
+                    _deleteTransaction,
+                    _didSelectTransaction)
+            //am stocat in variabila ca sa ma intorc mereu la ea pentru a amodifica ceva
+            );
 
         return Scaffold(
           appBar: appBar,
@@ -156,7 +179,7 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
                         value: _showChart,
                         onChanged: (val) {
                           setState(
-                                () {
+                            () {
                               _showChart = val;
                             },
                           );
@@ -168,11 +191,15 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
                   SizedBox(
                     //daca nu suntem in lanscape vreau sa afiseze ce e mai jos
                     height: (mediaQuery.size.height -
-                        appBar.preferredSize.height -
-                        mediaQuery.padding.top) *
+                            appBar.preferredSize.height -
+                            mediaQuery.padding.top) *
                         0.3,
                     child: SimpleBarChart(
-                      recentTransactions,
+                      widget.showToday
+                          ? recentTransactions(
+                              transactionsProvider.todayTransactions)
+                          : recentTransactions(
+                              transactionsProvider.transactions),
                       animate: false,
                     ),
                   ),
@@ -180,21 +207,24 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
                 if (isLandscape)
                   _showChart
                       ? SizedBox(
-                    height: (mediaQuery.size.height -
-                        appBar.preferredSize.height -
-                        mediaQuery.padding.top) *
-                        0.5,
-                    child: SimpleBarChart(
-                      recentTransactions,
-                      animate: false,
-                    ),
-                  )
+                          height: (mediaQuery.size.height -
+                                  appBar.preferredSize.height -
+                                  mediaQuery.padding.top) *
+                              0.5,
+                          child: SimpleBarChart(
+                            recentTransactions(
+                                transactionsProvider.transactions),
+                            animate: false,
+                          ),
+                        )
                       : txListWidget
               ],
             ),
           ),
-          floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerFloat,
           floatingActionButton: FloatingActionButton(
+            backgroundColor: Color(0xFF383838),
             child: const Icon(Icons.add),
             onPressed: () => _startAddNewTransaction(context),
           ),

@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:licenta/Screens/expenses_screen.dart';
-import 'package:licenta/Screens/financial_school_screen.dart';
 import 'package:licenta/Screens/goals_screen.dart';
 import 'package:licenta/Screens/news_home_screen.dart';
-import 'package:licenta/models/user_transaction.dart';
-import 'package:licenta/services/transaction_service.dart';
-import 'package:licenta/services/transactions_provider.dart';
+import 'package:licenta/providers/transactions_provider.dart';
+import 'package:licenta/screens/financial_school_screen.dart';
 import 'package:licenta/widgets/bottom_navigation_bar.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -28,13 +27,17 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xffD8F3F3),
       appBar: AppBar(
-        title: const Text(
-          'Overview',
-          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+        elevation: 0,
+        title: Center(
+          child: const Text(
+            'Overview',
+            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+          ),
         ),
         automaticallyImplyLeading: false,
-        backgroundColor: const Color(0xffE6DEF0),
+        backgroundColor: const Color(0xffD8F3F3),
       ),
       bottomNavigationBar: const CustomNavigationBar(selectedIndex: 0),
       body: Padding(
@@ -52,15 +55,14 @@ class _HomeScreenState extends State<HomeScreen> {
                       onTap: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                              builder: (_) => ExpensesScreen(
+                              builder: (_) => const ExpensesScreen(
                                   title: 'Personal Expenses',
-                                  transactions:
-                                      transactionsProvider.transactions)),
+                                  showToday: false)),
                         );
                       },
                       child: Card(
-                        color: const Color(0xFFf0edea),
-                        elevation: 10,
+                        color: Color(0xffD8F3F3),
+                        elevation: 0,
                         shape: const RoundedRectangleBorder(
                             borderRadius:
                                 BorderRadius.all(Radius.circular(10))),
@@ -80,7 +82,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   child: Text(
                                     'Latest Transaction',
                                     style: TextStyle(
-                                      fontSize: 17,
+                                      fontSize: 20,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
@@ -123,24 +125,53 @@ class _HomeScreenState extends State<HomeScreen> {
                               );
                             },
                             child: Card(
-                              color: const Color(0xFFe6def0),
-                              elevation: 10,
+                              color: Colors.white,
+                              elevation: 7,
                               shape: const RoundedRectangleBorder(
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(10))),
-                              child: ClipPath(
-                                clipper: ShapeBorderClipper(
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(10))),
-                                child: Container(
-                                    height: 100,
-                                    padding: const EdgeInsets.all(15),
-                                    child: const Center(
-                                        child: Text(
-                                      'Goals',
-                                      style: TextStyle(fontSize: 20),
-                                    ))),
+                              child: Stack(
+                                children: [
+                                  Align(
+                                    alignment: Alignment.topLeft,
+                                    child: Container(
+                                      padding: const EdgeInsets.all(15),
+                                      child: CircleAvatar(
+                                        radius: 15,
+                                        backgroundColor: Color(0xffD8F3F3),
+                                        child: Icon(
+                                          FeatherIcons.checkSquare,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  ClipPath(
+                                    clipper: ShapeBorderClipper(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                    ),
+                                    child: Container(
+                                      height: 100,
+                                      padding: const EdgeInsets.all(15),
+                                      child: const Center(
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          children: [
+                                            Text(
+                                              'Goals',
+                                              style: TextStyle(
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.w500),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           ),
@@ -151,33 +182,68 @@ class _HomeScreenState extends State<HomeScreen> {
                         Expanded(
                           child: GestureDetector(
                             onTap: () {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                    builder: (_) => ExpensesScreen(
+                              final today = DateTime.now();
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (_) => const ExpensesScreen(
                                         title: 'Spent today',
-                                        transactions: transactionsProvider
-                                            .todayTransactions)),
-                              );
+                                        showToday: true,
+                                      )));
                             },
                             child: Card(
-                              color: const Color(0xFFc1dedc),
-                              elevation: 10,
+                              color: Colors.white,
+                              elevation: 7,
                               shape: const RoundedRectangleBorder(
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(10))),
-                              child: ClipPath(
-                                clipper: ShapeBorderClipper(
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(10))),
-                                child: Container(
-                                    height: 100,
-                                    padding: const EdgeInsets.all(15),
-                                    child: const Center(
-                                        child: Text(
-                                      'Spent today',
-                                      style: TextStyle(fontSize: 20),
-                                    ))),
+                              child: Stack(
+                                children: [
+                                  Align(
+                                    alignment: Alignment.topLeft,
+                                    child: Container(
+                                      padding: const EdgeInsets.all(10),
+                                      child: CircleAvatar(
+                                        radius: 15,
+                                        backgroundColor: Color(0xffD8F3F3),
+                                        child: Icon(
+                                          FeatherIcons.dollarSign,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  ClipPath(
+                                    clipper: ShapeBorderClipper(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                    ),
+                                    child: Container(
+                                      height: 100,
+                                      padding: const EdgeInsets.all(15),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: [
+                                          Center(
+                                            child: Text(
+                                              'Spent today ',
+                                              style: const TextStyle(
+                                                  fontSize: 17,
+                                                  fontWeight: FontWeight.w500),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          ),
+                                          Text(
+                                            ' ${transactionsProvider.todayTotalSpent} RON',
+                                            style: TextStyle(
+                                                fontSize: 17,
+                                                fontWeight: FontWeight.bold),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           ),
@@ -195,24 +261,55 @@ class _HomeScreenState extends State<HomeScreen> {
                         );
                       },
                       child: Card(
-                          color: const Color(0xFFf0edea),
-                          elevation: 10,
-                          shape: const RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10))),
-                          child: ClipPath(
-                              clipper: ShapeBorderClipper(
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10))),
+                        color: Colors.white,
+                        elevation: 7,
+                        shape: const RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(10))),
+                        child: Stack(
+                          children: [
+                            Align(
+                              alignment: Alignment.topLeft,
                               child: Container(
-                                  height: 100,
-                                  width: 400,
-                                  padding: const EdgeInsets.all(15),
-                                  child: const Center(
+                                padding: const EdgeInsets.all(10),
+                                child: CircleAvatar(
+                                  backgroundColor: Color(0xffD8F3F3),
+                                  radius: 18,
+                                  child: Icon(
+                                    FeatherIcons.bell,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            ClipPath(
+                              clipper: ShapeBorderClipper(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
+                              child: Container(
+                                height: 100,
+                                width: 400,
+                                padding: const EdgeInsets.all(15),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    const Center(
                                       child: Text(
-                                    'See the latest News',
-                                    style: TextStyle(fontSize: 20),
-                                  ))))),
+                                        'See the latest News',
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                     const SizedBox(
                       height: 10,
@@ -221,40 +318,67 @@ class _HomeScreenState extends State<HomeScreen> {
                       onTap: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                              builder: (_) => const FinanciaSchool()),
+                              builder: (_) => const FinancialSchool()),
                         );
                       },
                       child: Card(
-                        color: const Color(0xFFc1dedc),
-                        elevation: 10,
+                        color: Colors.white,
+                        elevation: 7,
                         shape: const RoundedRectangleBorder(
                             borderRadius:
                                 BorderRadius.all(Radius.circular(10))),
-                        child: ClipPath(
-                          clipper: ShapeBorderClipper(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10))),
-                          child: Container(
-                              height: 100,
-                              width: 400,
-                              padding: const EdgeInsets.all(15),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: const [
-                                  Text(
-                                    'Financial School',
-                                    style: TextStyle(fontSize: 20),
+                        child: Stack(
+                          children: [
+                            Align(
+                              alignment: Alignment.topLeft,
+                              child: Container(
+                                padding: const EdgeInsets.all(10),
+                                child: CircleAvatar(
+                                  backgroundColor: Color(0xffD8F3F3),
+                                  radius:
+                                      18, // Ajustează această valoare pentru a face cercul mai mic
+                                  child: Icon(
+                                    FeatherIcons.bookOpen,
+                                    color: Colors.black,
                                   ),
-                                  SizedBox(
-                                    height: 5,
-                                  ),
-                                  Text(
-                                    'Learn how to make your money work for you',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  )
-                                ],
-                              )),
+                                ),
+                              ),
+                            ),
+                            ClipPath(
+                              clipper: ShapeBorderClipper(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
+                              child: Container(
+                                height: 100,
+                                width: 400,
+                                padding: const EdgeInsets.all(15),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: const [
+                                    Text(
+                                      'Financial School',
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                    Text(
+                                      'Learn how to make your money work for you',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w400,
+                                          fontSize: 15,
+                                          color:
+                                              Color.fromARGB(221, 41, 41, 41)),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),

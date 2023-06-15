@@ -12,7 +12,11 @@ class CustomNavigationBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return BottomNavigationBar(
       items: const <BottomNavigationBarItem>[
-        BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+        BottomNavigationBarItem(
+            icon: Icon(
+              Icons.home,
+            ),
+            label: 'Home'),
         BottomNavigationBarItem(
             icon: Icon(Icons.query_stats_outlined), label: 'Statistics'),
         BottomNavigationBarItem(
@@ -29,7 +33,7 @@ class CustomNavigationBar extends StatelessWidget {
                 transitionDuration: Duration.zero,
                 pageBuilder: (_, __, ___) => HomeScreen(),
               ),
-                  (route) => false,
+              (route) => false,
             );
             break;
           case 1:
@@ -39,7 +43,7 @@ class CustomNavigationBar extends StatelessWidget {
                 transitionDuration: Duration.zero,
                 pageBuilder: (_, __, ___) => const StatisticsScreen(),
               ),
-                  (route) => false,
+              (route) => false,
             );
             break;
           case 2:
@@ -49,7 +53,7 @@ class CustomNavigationBar extends StatelessWidget {
                 transitionDuration: Duration.zero,
                 pageBuilder: (_, __, ___) => const ProfileScreen(),
               ),
-                  (route) => false,
+              (route) => false,
             );
             break;
         }

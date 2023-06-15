@@ -54,7 +54,7 @@ class _Onboarding2State extends State<Onboarding2> {
           const Padding(
             padding: EdgeInsets.symmetric(horizontal: 8),
             child: Text(
-              'Learn how to manage your money',
+              'Keep your expenses on track',
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 34, fontWeight: FontWeight.bold),
             ),
@@ -62,7 +62,7 @@ class _Onboarding2State extends State<Onboarding2> {
           const Padding(
             padding: EdgeInsets.symmetric(vertical: 8),
             child: Text(
-              'Step by step',
+              'You don\'t Have to worry because we got\n what you are looking for ',
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 16),
             ),

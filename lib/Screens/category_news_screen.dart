@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
-import 'package:licenta/Screens/news_home_screen.dart';
 import 'package:licenta/helper/news.dart';
 import 'package:licenta/models/article_model.dart';
+import 'package:licenta/widgets/blog_tile.dart';
 
 class CategoryNewsScreen extends StatefulWidget {
   final String category;
@@ -38,8 +36,12 @@ class _CategoryNewsScreenState extends State<CategoryNewsScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
         title: Row(
-          children: <Widget>[
+          children: const <Widget>[
             Text(
               'Your',
               style: TextStyle(color: Colors.black),
@@ -54,7 +56,7 @@ class _CategoryNewsScreenState extends State<CategoryNewsScreen> {
           Opacity(
             opacity: 0,
             child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 16),
             ),
           )
         ],
@@ -64,20 +66,20 @@ class _CategoryNewsScreenState extends State<CategoryNewsScreen> {
       body: _loading
           ? Center(
               child: Container(
-                child: CircularProgressIndicator(),
+                child: const CircularProgressIndicator(),
               ),
             )
           : SingleChildScrollView(
               child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 16),
+                padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Column(
                   children: <Widget>[
                     Container(
-                      padding: EdgeInsets.only(top: 16),
+                      padding: const EdgeInsets.only(top: 16),
                       child: ListView.builder(
                           itemCount: articles.length,
                           shrinkWrap: true,
-                          physics: ClampingScrollPhysics(),
+                          physics: const ClampingScrollPhysics(),
                           itemBuilder: (context, index) {
                             return BlogTile(
                               imageUrl: articles[index].urlToImage,

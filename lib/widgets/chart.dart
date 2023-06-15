@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:intl/intl.dart';
 import 'package:licenta/models/user_transaction.dart';
 
 import 'package:charts_flutter/flutter.dart' as charts;
-import 'package:flutter/material.dart';
 
 class SimpleBarChart extends StatelessWidget {
   final List<UserTransaction> recentTransactions;
@@ -13,65 +10,104 @@ class SimpleBarChart extends StatelessWidget {
 
   SimpleBarChart(this.recentTransactions, {required this.animate});
 
+  double _calculateTotalSpendingThisWeek() {
+    final currentDate = DateTime.now();
+    double totalSum = 0.0;
+
+    for (int i = 6; i >= 0; i--) {
+      final weekDay = currentDate.subtract(Duration(days: i));
+      final dayTransactions = recentTransactions.where((tx) =>
+          tx.date.year == weekDay.year &&
+          tx.date.month == weekDay.month &&
+          tx.date.day == weekDay.day);
+
+      final totalSumDay =
+          dayTransactions.fold(0.0, (sum, tx) => sum + tx.amount);
+
+      totalSum += totalSumDay;
+    }
+
+    return totalSum;
+  }
+
+  double _calculateTotalSpendingThisMonth() {
+    final currentDate = DateTime.now();
+    double totalSum = 0.0;
+
+    for (final tx in recentTransactions) {
+      if (tx.date.month == currentDate.month &&
+          tx.date.year == currentDate.year) {
+        totalSum += tx.amount;
+      }
+    }
+
+    return totalSum;
+  }
+
   @override
   Widget build(BuildContext context) {
-    List<Map<String, dynamic>> groupedTransactionValues =
-        List.generate(7, (index) {
-      final weekDay = DateTime.now().subtract(
-        Duration(days: index),
-      );
-      var totalSum = 0.0;
+    Map<int, double> groupedTransactionValues = {};
 
-      for (var i = 0; i < recentTransactions.length; i++) {
-        if (recentTransactions[i].date.day == weekDay.day &&
-            recentTransactions[i].date.month == weekDay.month &&
-            recentTransactions[i].date.year == weekDay.year) {
-          totalSum += recentTransactions[i].amount;
-        }
-      }
+    DateTime currentDate = DateTime.now();
+    double totalSpendingThisWeek = _calculateTotalSpendingThisWeek();
+    double totalSpendingThisMonth = _calculateTotalSpendingThisMonth();
 
-      return {
-        'day': DateFormat.E().format(weekDay).substring(0, 1),
-        'amount': totalSum,
-      };
-    }).reversed.toList();
+    for (int i = 6; i >= 0; i--) {
+      final weekDay = currentDate.subtract(Duration(days: i));
+      final dayTransactions = recentTransactions.where((tx) =>
+          tx.date.year == weekDay.year &&
+          tx.date.month == weekDay.month &&
+          tx.date.day == weekDay.day);
 
-    double totalSpending = groupedTransactionValues.fold(0.0, (sum, item) {
-      return sum + (item['amount'] as double);
-    });
+      final totalSum = dayTransactions.fold(0.0, (sum, tx) => sum + tx.amount);
 
-    List<charts.Series<Map<String, dynamic>, String>> seriesList = [
-      new charts.Series<Map<String, dynamic>, String>(
+      groupedTransactionValues[i] = totalSum;
+    }
+
+    double totalSpending = recentTransactions
+        .where((tx) =>
+            tx.date.month == currentDate.month &&
+            tx.date.year == currentDate.year)
+        .fold(0.0, (sum, tx) => sum + tx.amount);
+
+    List<charts.Series<dynamic, String>> seriesList = [
+      charts.Series<dynamic, String>(
         id: 'Sales',
         colorFn: (_, __) => charts.MaterialPalette.gray.shadeDefault,
-        domainFn: (data, _) => data['day'] as String,
-        measureFn: (data, _) => data['amount'] as double,
-        data: groupedTransactionValues,
-      )
+        domainFn: (data, _) => DateFormat.E().format(
+          currentDate.subtract(Duration(days: data.key)),
+        ),
+        measureFn: (data, _) => data.value,
+        data: groupedTransactionValues.entries.toList(),
+      ),
     ];
 
-    return Card(
-      elevation: 6,
-      margin: EdgeInsets.all(20),
-      child: Container(
-        padding: EdgeInsets.all(10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'Total spending: ${totalSpending.toStringAsFixed(2)} RON',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Expanded(
-              child: new charts.BarChart(
-                seriesList,
-                animate: animate,
+    return Container(
+      child: Card(
+        elevation: 6,
+        margin: EdgeInsets.all(20),
+        child: Container(
+          padding: EdgeInsets.all(10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                'Total spending this week: ${totalSpendingThisWeek.toStringAsFixed(2)} RON',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
-            ),
-          ],
+              Text(
+                'Total spending this month: ${totalSpendingThisMonth.toStringAsFixed(2)} RON',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 10),
+              Expanded(
+                child: charts.BarChart(
+                  seriesList,
+                  animate: animate,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -8,7 +8,8 @@ class TransactionList extends StatelessWidget {
   final Function deletetx;
   final Function didSelect;
 
-  const TransactionList(this.transactions, this.deletetx, this.didSelect, {super.key});
+  const TransactionList(this.transactions, this.deletetx, this.didSelect,
+      {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -36,20 +37,25 @@ class TransactionList extends StatelessWidget {
                 ),
                 child: ListTile(
                   leading: CircleAvatar(
+                    backgroundColor: Color(0xFF383838),
                     radius: 30,
                     child: Padding(
                       padding: const EdgeInsets.all(6),
                       child: FittedBox(
-                          child: Text('${transactions[index].amount}')),
+                          child: Text(
+                        '${transactions[index].amount}',
+                        style: TextStyle(color: Colors.white),
+                      )),
                     ),
                   ),
                   title: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        transactions[index].title,
-                          style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)
-                      ),
+                      Text(transactions[index].title,
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleMedium
+                              ?.copyWith(fontWeight: FontWeight.bold)),
                       Text(
                         transactions[index].category.stringValue(),
                         style: Theme.of(context).textTheme.bodyMedium,
@@ -69,12 +75,10 @@ class TransactionList extends StatelessWidget {
                         )
                       : IconButton(
                           icon: const Icon(Icons.delete),
-                          color: Theme.of(context).errorColor,
+                          color: Color(0xFF383838),
                           onPressed: () => deletetx(transactions[index].id),
                         ),
-                  onTap: () => {
-                    didSelect(transactions[index])
-                  },
+                  onTap: () => {didSelect(transactions[index])},
                 ),
               );
             },

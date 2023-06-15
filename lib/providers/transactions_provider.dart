@@ -50,6 +50,20 @@ class Transactions extends ChangeNotifier {
     }).toList();
   }
 
+  double get todayTotalSpent {
+    final today = DateTime.now();
+    double totalSpent = 0.0;
+
+    transactions.where((tx) {
+      return tx.date.year == today.year &&
+          tx.date.month == today.month &&
+          tx.date.day == today.day;
+    }).toList().forEach((tx) {
+        totalSpent += tx.amount;
+      });
+    return totalSpent;
+  }
+
   Future<void> addTransaction(UserTransaction transaction) async {
     _isLoading = true;
     notifyListeners();
@@ -92,9 +106,9 @@ class Transactions extends ChangeNotifier {
     Map<String, double> statisticsMap = {};
 
     for (var category in TransactionCategory.values) {
-      statisticsMap[category.stringValue()] = transactions
-          .where((transaction) => transaction.category == category)
-          .fold(0.0, (sum, transaction) => sum + transaction.amount);
+        statisticsMap[category.stringValue()] = transactions
+            .where((transaction) => transaction.category == category)
+            .fold(0.0, (sum, transaction) => sum + transaction.amount);
     }
 
     return statisticsMap;

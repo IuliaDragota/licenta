@@ -1,14 +1,9 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
-import 'package:licenta/Screens/article_news_screen.dart';
-import 'package:licenta/Screens/category_news_screen.dart';
 import 'package:licenta/helper/news.dart';
-import 'package:licenta/main.dart';
 import 'package:licenta/models/article_model.dart';
 import 'package:licenta/models/category_model.dart';
+import 'package:licenta/widgets/blog_tile.dart';
+import 'package:licenta/widgets/category_tile.dart';
 
 class NewsHomeScreen extends StatefulWidget {
   const NewsHomeScreen({super.key});
@@ -74,30 +69,21 @@ class _NewsScreenState extends State<NewsHomeScreen> {
           icon: const Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        title: Row(
-          children: <Widget>[
-            Text(
-              'Your',
-              style: TextStyle(color: Colors.black),
-            ),
-            Text(
-              'News',
-              style: TextStyle(color: Colors.blue),
-            )
-          ],
+        title: Text(
+          'YourNews',
+          style: TextStyle(color: Colors.black),
         ),
-        centerTitle: true,
         elevation: 0.0,
       ),
       body: _loading
           ? Center(
               child: Container(
-                child: CircularProgressIndicator(),
+                child: const CircularProgressIndicator(),
               ),
             )
           : SingleChildScrollView(
               child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 16),
+                padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Column(
                   children: <Widget>[
                     //categories
@@ -118,11 +104,11 @@ class _NewsScreenState extends State<NewsHomeScreen> {
                     // Blogs
 
                     Container(
-                      padding: EdgeInsets.only(top: 16),
+                      padding: const EdgeInsets.only(top: 16),
                       child: ListView.builder(
                           itemCount: articles.length,
                           shrinkWrap: true,
-                          physics: ClampingScrollPhysics(),
+                          physics: const ClampingScrollPhysics(),
                           itemBuilder: (context, index) {
                             return BlogTile(
                               imageUrl: articles[index].urlToImage,
@@ -136,104 +122,6 @@ class _NewsScreenState extends State<NewsHomeScreen> {
                 ),
               ),
             ),
-    );
-  }
-}
-
-class CategoryTile extends StatelessWidget {
-  final imageUrl, categoryName;
-  CategoryTile({this.imageUrl, this.categoryName});
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    CategoryNewsScreen(category: categoryName.toLowerCase())));
-      },
-      child: Container(
-        margin: EdgeInsets.only(right: 16),
-        child: Stack(
-          children: <Widget>[
-            ClipRRect(
-              borderRadius: BorderRadius.circular(6),
-              child: CachedNetworkImage(
-                imageUrl: imageUrl,
-                width: 120,
-                height: 60,
-                fit: BoxFit.cover,
-              ),
-            ),
-            Container(
-              alignment: Alignment.center,
-              width: 120,
-              height: 60,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(6),
-                color: Colors.black26,
-              ),
-              child: Text(
-                categoryName,
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500),
-              ),
-            )
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class BlogTile extends StatelessWidget {
-  final String imageUrl, title, desc, url;
-  BlogTile(
-      {required this.imageUrl,
-      required this.title,
-      required this.desc,
-      required this.url});
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => ArticleNewsScreen(
-                      blogUrl: url,
-                    )));
-      },
-      child: Container(
-        margin: EdgeInsets.only(bottom: 16),
-        child: Column(
-          children: <Widget>[
-            ClipRRect(
-              borderRadius: BorderRadius.circular(6),
-              child: Image.network(imageUrl),
-            ),
-            Text(
-              title,
-              style: TextStyle(
-                  fontSize: 18,
-                  color: Colors.black87,
-                  fontWeight: FontWeight.w500),
-            ),
-            SizedBox(
-              height: 8,
-            ),
-            Text(
-              desc,
-              style: TextStyle(color: Colors.black54),
-            ),
-          ],
-        ),
-      ),
     );
   }
 }

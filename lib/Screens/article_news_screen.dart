@@ -56,7 +56,8 @@ class _ArticleNewsScreenState extends State<ArticleNewsScreen> {
       body: SizedBox(
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
-          child: WebViewWidget(controller: controller)),
+          child: WebViewWidget(controller: controller)
+      ),
     );
   }
 }

@@ -56,7 +56,7 @@ class _Onboarding3State extends State<Onboarding3> {
           const Padding(
             padding: EdgeInsets.all(8.0),
             child: Text(
-              'Keep your eyes on the tranzactions',
+              'Learn the basics while tracking your expenses',
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 34, fontWeight: FontWeight.bold),
             ),
@@ -64,7 +64,7 @@ class _Onboarding3State extends State<Onboarding3> {
           const Padding(
             padding: EdgeInsets.symmetric(vertical: 8),
             child: Text(
-              'And read the News on you free time',
+              'And read the latest news when you are bored',
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 16),
             ),
