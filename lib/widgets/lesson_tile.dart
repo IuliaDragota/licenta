@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:licenta/screens/financial_lesson_screen.dart';
 
 class LessonTile extends StatelessWidget {
-  final String title, content;
+  final String title, content, imageUrl;
 
-  LessonTile({required this.title, required this.content});
+  LessonTile(
+      {required this.title, required this.content, required this.imageUrl});
 
   @override
   Widget build(BuildContext context) {
@@ -14,9 +15,10 @@ class LessonTile extends StatelessWidget {
               context,
               MaterialPageRoute(
                   builder: (context) => FinancialLessonScreen(
-                    title: title,
-                    content: content,
-                  )));
+                        title: title,
+                        content: content,
+                        imageUrl: imageUrl,
+                      )));
         },
         child: Container(
           margin: const EdgeInsets.all(10.0),

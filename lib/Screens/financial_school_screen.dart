@@ -49,8 +49,10 @@ class _FinancialSchoolState extends State<FinancialSchool> {
                 physics: const ClampingScrollPhysics(),
                 itemBuilder: (context, index) {
                   return LessonTile(
-                      title: lessonsProvider.lessons[index].title,
-                      content: lessonsProvider.lessons[index].content);
+                    title: lessonsProvider.lessons[index].title,
+                    content: lessonsProvider.lessons[index].content,
+                    imageUrl: lessonsProvider.lessons[index].imageUrl,
+                  );
                 }),
           );
         }));

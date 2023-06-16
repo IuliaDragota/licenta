@@ -56,8 +56,7 @@ class _NewTransactionState extends State<NewTransaction> {
           title: enteredTitle,
           amount: enteredAmount,
           date: date,
-          category: category)
-      );
+          category: category));
     } else {
       widget.addTx(
         // codul acesta se executa in functie de if
@@ -88,9 +87,8 @@ class _NewTransactionState extends State<NewTransaction> {
 
   void _presentCategoryPicker() {
     List<TransactionCategory> categories = TransactionCategory.values;
-    List<String> categoryList = categories
-        .map((category) => category.stringValue())
-        .toList();
+    List<String> categoryList =
+        categories.map((category) => category.stringValue()).toList();
 
     Picker(
       adapter: PickerDataAdapter<String>(pickerData: categoryList),
@@ -99,7 +97,8 @@ class _NewTransactionState extends State<NewTransaction> {
       title: const Text('Select Category'),
       onConfirm: (Picker picker, List<int> value) {
         setState(() {
-          _selectedCategory = TransactionCategory.values[picker.selecteds.first];
+          _selectedCategory =
+              TransactionCategory.values[picker.selecteds.first];
         });
       },
     ).showDialog(context);
@@ -181,7 +180,8 @@ class _NewTransactionState extends State<NewTransaction> {
                 style: TextButton.styleFrom(
                   primary: Colors.white,
                 ),
-                child: Text('${widget.transaction == null ? 'Add' : 'Edit'} Transaction'),
+                child: Text(
+                    '${widget.transaction == null ? 'Add' : 'Edit'} Transaction'),
               ),
             ],
           ),

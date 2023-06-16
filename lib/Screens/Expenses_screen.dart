@@ -135,12 +135,10 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
               onPressed: () => Navigator.of(context).pop(),
             ),
             backgroundColor: Colors.white,
-            title: Center(
-              child: Text(
-                widget.title,
-                style: const TextStyle(
-                    fontWeight: FontWeight.bold, color: Colors.black),
-              ),
+            title: Text(
+              widget.title,
+              style: const TextStyle(
+                  fontWeight: FontWeight.bold, color: Colors.black),
             ),
             bottom: PreferredSize(
                 preferredSize: const Size.fromHeight(6.0),

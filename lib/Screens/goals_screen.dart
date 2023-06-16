@@ -36,11 +36,9 @@ class _GoalsScreenState extends State<GoalsScreen> {
               icon: const Icon(Icons.arrow_back, color: Colors.black),
               onPressed: () => Navigator.of(context).pop(),
             ),
-            title: Center(
-              child: const Text(
-                'Set your Goals',
-                style: TextStyle(color: Colors.black),
-              ),
+            title: Text(
+              'Set your Goals',
+              style: TextStyle(color: Colors.black),
             ),
             bottom: PreferredSize(
                 preferredSize: const Size.fromHeight(6.0),
