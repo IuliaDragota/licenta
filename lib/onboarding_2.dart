@@ -50,6 +50,7 @@ class _Onboarding2State extends State<Onboarding2> {
         ),
       ),
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           const Padding(
             padding: EdgeInsets.symmetric(horizontal: 8),
@@ -68,7 +69,12 @@ class _Onboarding2State extends State<Onboarding2> {
             ),
           ),
           const SizedBox(height: 10),
-          Image.asset('assets/images/new_onboarding_2.png'),
+          Image.asset(
+            'assets/images/new_onboarding_2.png',
+            width: 315,
+            height: 200,
+            fit: BoxFit.fill,
+          ),
           const SizedBox(height: 10),
           Padding(
             padding: const EdgeInsets.all(8.0),

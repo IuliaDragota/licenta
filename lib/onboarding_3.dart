@@ -50,8 +50,14 @@ class _Onboarding3State extends State<Onboarding3> {
         ),
       ),
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          Image.asset('assets/images/new_onboarding_3.png'),
+          Image.asset(
+            'assets/images/new_onboarding_3.png',
+            width: 315,
+            height: 200,
+            fit: BoxFit.fill,
+          ),
           const SizedBox(height: 20),
           const Padding(
             padding: EdgeInsets.all(8.0),

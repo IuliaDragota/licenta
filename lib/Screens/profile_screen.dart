@@ -97,7 +97,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Send password reset email?'),
+          title: const Text('Send password reset on email?'),
           actions: [
             TextButton(
               child: const Text(

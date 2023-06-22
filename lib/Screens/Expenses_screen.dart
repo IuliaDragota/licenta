@@ -159,9 +159,7 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
                         ? transactionsProvider.todayTransactions
                         : transactionsProvider.transactions,
                     _deleteTransaction,
-                    _didSelectTransaction)
-            //am stocat in variabila ca sa ma intorc mereu la ea pentru a amodifica ceva
-            );
+                    _didSelectTransaction));
 
         return Scaffold(
           appBar: appBar,
@@ -191,7 +189,7 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
                     height: (mediaQuery.size.height -
                             appBar.preferredSize.height -
                             mediaQuery.padding.top) *
-                        0.3,
+                        0.5,
                     child: SimpleBarChart(
                       widget.showToday
                           ? recentTransactions(
@@ -208,7 +206,7 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
                           height: (mediaQuery.size.height -
                                   appBar.preferredSize.height -
                                   mediaQuery.padding.top) *
-                              0.5,
+                              0.55,
                           child: SimpleBarChart(
                             recentTransactions(
                                 transactionsProvider.transactions),
