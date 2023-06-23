@@ -93,13 +93,13 @@ class SimpleBarChart extends StatelessWidget {
             children: <Widget>[
               Text(
                 'Total spending this week: ${totalSpendingThisWeek.toStringAsFixed(2)} RON',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
               Text(
                 'Total spending this month: ${totalSpendingThisMonth.toStringAsFixed(2)} RON',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 10),
+              SizedBox(height: 5),
               Expanded(
                 child: charts.BarChart(
                   seriesList,

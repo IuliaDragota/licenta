@@ -50,15 +50,16 @@ class _Onboarding1State extends State<Onboarding1> {
         ),
       ),
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
+          const Spacer(),
           Image.asset(
-            'assets/images/new_onboarding_1.png',
-            width: 315,
-            height: 200,
+            'assets/images/onboarding_1.png',
+            width: 400,
+            height: 250,
             fit: BoxFit.fill,
           ),
-          const SizedBox(height: 10),
+          const Spacer(),
           const Padding(
             padding: EdgeInsets.all(8.0),
             child: Text(
@@ -67,6 +68,7 @@ class _Onboarding1State extends State<Onboarding1> {
               style: TextStyle(fontSize: 34, fontWeight: FontWeight.bold),
             ),
           ),
+          const Spacer(),
           const Padding(
             padding: EdgeInsets.symmetric(vertical: 8),
             child: Text(
@@ -75,7 +77,7 @@ class _Onboarding1State extends State<Onboarding1> {
               style: TextStyle(fontSize: 16),
             ),
           ),
-          const SizedBox(height: 30),
+          const Spacer(),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8),
             child: GestureDetector(
@@ -105,6 +107,9 @@ class _Onboarding1State extends State<Onboarding1> {
               ),
             ),
           ),
+          const SizedBox(
+            height: 10,
+          ),
           GestureDetector(
             onTap: () => Navigator.push(context,
                 MaterialPageRoute(builder: (context) => LoginScreen())),
@@ -120,6 +125,9 @@ class _Onboarding1State extends State<Onboarding1> {
                     fontWeight: FontWeight.bold),
               )),
             ),
+          ),
+          const SizedBox(
+            height: 10,
           ),
         ],
       ),

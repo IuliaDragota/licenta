@@ -15,7 +15,7 @@ class _Onboarding3State extends State<Onboarding3> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Scaffold(
-      backgroundColor: const Color(0xffd5c8c5),
+      backgroundColor: Color(0xFFD5C8C5),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -50,15 +50,15 @@ class _Onboarding3State extends State<Onboarding3> {
         ),
       ),
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Image.asset(
-            'assets/images/new_onboarding_3.png',
-            width: 315,
-            height: 200,
+            'assets/images/onboarding_3.png',
+            width: 400,
+            height: 232,
             fit: BoxFit.fill,
           ),
-          const SizedBox(height: 20),
+          const Spacer(),
           const Padding(
             padding: EdgeInsets.all(8.0),
             child: Text(
@@ -67,6 +67,7 @@ class _Onboarding3State extends State<Onboarding3> {
               style: TextStyle(fontSize: 34, fontWeight: FontWeight.bold),
             ),
           ),
+          const Spacer(),
           const Padding(
             padding: EdgeInsets.symmetric(vertical: 8),
             child: Text(
@@ -75,7 +76,7 @@ class _Onboarding3State extends State<Onboarding3> {
               style: TextStyle(fontSize: 16),
             ),
           ),
-          const SizedBox(height: 50),
+          const Spacer(),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8),
             child: GestureDetector(
@@ -99,6 +100,9 @@ class _Onboarding3State extends State<Onboarding3> {
                 )),
               ),
             ),
+          ),
+          const SizedBox(
+            height: 70,
           ),
         ],
       ),

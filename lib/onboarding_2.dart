@@ -50,8 +50,9 @@ class _Onboarding2State extends State<Onboarding2> {
         ),
       ),
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
+          const Spacer(),
           const Padding(
             padding: EdgeInsets.symmetric(horizontal: 8),
             child: Text(
@@ -60,6 +61,7 @@ class _Onboarding2State extends State<Onboarding2> {
               style: TextStyle(fontSize: 34, fontWeight: FontWeight.bold),
             ),
           ),
+          const Spacer(),
           const Padding(
             padding: EdgeInsets.symmetric(vertical: 8),
             child: Text(
@@ -68,16 +70,16 @@ class _Onboarding2State extends State<Onboarding2> {
               style: TextStyle(fontSize: 16),
             ),
           ),
-          const SizedBox(height: 10),
+          const Spacer(),
           Image.asset(
-            'assets/images/new_onboarding_2.png',
-            width: 315,
-            height: 200,
+            'assets/images/onboarding_2.png',
+            width: 400,
+            height: 250,
             fit: BoxFit.fill,
           ),
-          const SizedBox(height: 10),
+          const Spacer(),
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.symmetric(horizontal: 8),
             child: GestureDetector(
               onTap: () => Navigator.push(
                 context,
@@ -105,24 +107,27 @@ class _Onboarding2State extends State<Onboarding2> {
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: GestureDetector(
-              onTap: () => Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => LoginScreen())),
-              child: SizedBox(
-                width: size.width,
-                height: 50,
-                child: const Center(
-                    child: Text(
-                  'Skip',
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold),
-                )),
-              ),
+          const SizedBox(
+            height: 10,
+          ),
+          GestureDetector(
+            onTap: () => Navigator.push(context,
+                MaterialPageRoute(builder: (context) => LoginScreen())),
+            child: SizedBox(
+              width: size.width,
+              height: 50,
+              child: const Center(
+                  child: Text(
+                'Skip',
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold),
+              )),
             ),
+          ),
+          const SizedBox(
+            height: 10,
           ),
         ],
       ),

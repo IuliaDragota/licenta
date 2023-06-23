@@ -189,7 +189,7 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
                     height: (mediaQuery.size.height -
                             appBar.preferredSize.height -
                             mediaQuery.padding.top) *
-                        0.5,
+                        0.4,
                     child: SimpleBarChart(
                       widget.showToday
                           ? recentTransactions(
